@@ -39,36 +39,32 @@ contract MarketPlace {
     require(bytes(_name).length > 0);
     // Required Valid Price
     require(_price > 0);
-    //Increment product count
+    // Incrémentation du products
     productCount ++;
-    //create a product
+    // Création du produit
     products[productCount] = Product(productCount, _name, _price, msg.sender, false);
     //Trigger the enter
     emit ProductCreated(productCount, _name, _price, msg.sender, false);
   }
 
   function purchaseProduct(uint _id) public payable {
-    // Fetch the product
+    // Fetch des products
     Product memory _product = products[_id];
-    // Fetch the Owner
+    // Fetch des owner
     address payable _seller = _product.owner;
-    // Check the product having valid ID
+    // Verif que le produit a une identité valide
     require(_product.id > 0 && _product.id <= productCount);
-    // Check enough Ether in transaction
+    // Verif ether
     require(msg.value >= _product.price);
-    // Check the product not be purchased before
+    // Verif que le produit ne soit pas acheté avant
     require(!_product.purchased);
-    // check the seller can't buy his own product
+    // Verif que le vendeur ne peut pas acheter son propre produit
     require(_seller != msg.sender, "Seller can't buy his own product");
-    // Transfer the ownership to buyer
     _product.owner = msg.sender;
-    // Mark as Purchase
     _product.purchased = true;
-    // Update the product
     products[_id] = _product;
-    // Pay the seller
+    // Paiement du vendeur
     address(_seller).transfer(msg.value);
-    // Trigger the event
     emit ProductSeller(productCount, _product.name, _product.price, msg.sender, true);
 
   }
