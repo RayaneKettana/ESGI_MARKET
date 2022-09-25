@@ -1,7 +1,5 @@
 # MARKET PLACE ESGI BLOCKCHAIN
 
-# Description
-
 Application de market place simple avec la possibilité d'ajouter / acheter des produits. 
 
 ## Tools et Frameworks utilisés 
